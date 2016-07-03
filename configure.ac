@@ -12,10 +12,12 @@ AC_PROG_CC
 AC_CANONICAL_HOST
 
 
+X86="false"
+
 AS_CASE(
   [$host_cpu],
-  [i?86],     [BITS="32"],
-  [x86_64],   [BITS="64"],
+  [i?86],     [BITS="32" X86="true"],
+  [x86_64],   [BITS="64" X86="true"],
 )
 
 AS_CASE(
@@ -31,6 +33,13 @@ AS_CASE(
    ]
 )
 
+
+AS_IF(
+      [test "x$X86" = "xtrue"],
+      [
+       AC_SUBST([MFLAGS], ["-mfpmath=sse -msse2"])
+      ]
+)
 
 PKG_CHECK_MODULES([VapourSynth], [vapoursynth])
 
